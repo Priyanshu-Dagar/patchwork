@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <style>
+        body { font-family: 'Georgia', serif; text-align: center; background: #fdfdfd; padding: 50px; }
+        .certificate { 
+            border: 15px double #d4af37; 
+            padding: 50px; 
+            width: 800px; 
+            margin: auto; 
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2c3e50; font-size: 3rem; margin-bottom: 10px; }
+        .sub-header { font-size: 1.5rem; color: #7f8c8d; }
+        .recipient { font-size: 2.5rem; color: #2980b9; margin: 30px 0; font-weight: bold; }
+        .project-title { font-size: 1.8rem; font-style: italic; }
+        .date { margin-top: 50px; font-weight: bold; }
+        .no-print { margin-top: 20px; }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <h1>Certificate of Completion</h1>
+        <p class="sub-header">This is to certify that</p>
+        <div class="recipient"><%= user.username %></div>
+        <p class="sub-header">has successfully completed the project</p>
+        <div class="project-title">"<%= project.title %>"</div>
+        <p>through the Patchwork Skill-Sharing Network</p>
+        <div class="date">Issued on: <%= new Date().toLocaleDateString() %></div>
+    </div>
+    <div class="no-print">
+        <button onclick="window.print()">Print to PDF</button>
+        <br><br>
+        <a href="/dashboard">Back to Dashboard</a>
+    </div>
+</body>
+</html>

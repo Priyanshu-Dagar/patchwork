@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Patchwork Time Bank</h1>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Transaction History</h2>
+        <table border="1" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>User</th>
+                    <th>Amount</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% transactions.forEach(t => { %>
+                    <tr>
+                        <td><%= t.timestamp.toLocaleDateString() %></td>
+                        <td><%= t.fromUser._id.toString() === currentUser.id ? 'Sent' : 'Received' %></td>
+                        <td>
+                            <%= t.fromUser._id.toString() === currentUser.id ? t.toUser.username : t.fromUser.username %>
+                        </td>
+                        <td style="color: <%= t.fromUser._id.toString() === currentUser.id ? 'red' : 'green' %>;">
+                            <%= t.fromUser._id.toString() === currentUser.id ? '-' : '+' %><%= t.amount %>
+                        </td>
+                        <td><%= t.reason %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Patchwork</h1>
+        <nav>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/users/profile">Profile</a></li>
+                    <% if (currentUser.role === 'admin') { %>
+                        <li><a href="/admin/dashboard" style="color: gold;">Admin</a></li>
+                    <% } %>
+                    <li><a href="/auth/logout">Logout</a></li>
+                </ul>
+            </nav>
+            </header>
+            <main>
+                <h2>Welcome, <%= currentUser.username %>!</h2>
+                <div class="stats">
+                    <p>Time Credits: <strong><%= currentUser.timeCredits %></strong></p>
+                    <a href="/timebank/history">View History</a>
+                </div>
+
+                <section>
+                    <h3>Transfer Credits</h3>
+                    <form action="/timebank/transfer" method="POST" class="card">
+                        <input type="text" name="toUsername" placeholder="Recipient Username" required>
+                        <input type="number" name="amount" placeholder="Amount" min="1" required>
+                        <select name="reason">
+                            <option value="teaching">Skill Teaching</option>
+                            <option value="help">General Help</option>
+                        </select>
+                        <button type="submit" class="btn">Send Credits</button>
+                    </form>
+                </section>
+            <section>
+                <h3>Community Skill Matrix</h3>
+                <div id="heatmap" class="heatmap"></div>
+            </section>
+
+            <section>
+                <h3>Active Project</h3>
+                <% if (activeProject) { %>
+                    <div class="card">
+                        <h4><%= activeProject.title %></h4>
+                        <p>Status: <%= activeProject.status %></p>
+                        <a href="/tasks/board/<%= activeProject._id %>" class="btn">Go to Task Board</a>
+                    </div>
+                <% } else if (currentUser.selectedTemplate) { %>
+                    <div class="card" style="border-left: 5px solid #3498db;">
+                        <p>You are in the matching queue for a new project. We will notify you when a team is found!</p>
+                    </div>
+                <% } else { %>
+                    <p>You have no active project. <a href="/projects/templates">Browse Templates</a></p>
+                <% } %>
+            <section>
+                <h3>Completed Projects</h3>
+                <% if (currentUser.completedProjects && currentUser.completedProjects.length > 0) { %>
+                    <div class="template-grid">
+                        <% currentUser.completedProjects.forEach(projectId => { %>
+                            <div class="card">
+                                <h5>Project ID: <%= projectId %></h5>
+                                <a href="/certificates/<%= projectId %>" class="btn" style="background: #8e44ad;">View Certificate</a>
+                                <br><br>
+                                <form action="/showcase/add" method="POST">
+                                    <input type="hidden" name="projectId" value="<%= projectId %>">
+                                    <input type="text" name="title" placeholder="Showcase Title" required style="width: 100%; margin-bottom: 5px;">
+                                    <textarea name="description" placeholder="Description" required style="width: 100%; margin-bottom: 5px;"></textarea>
+                                    <input type="url" name="imageUrl" placeholder="Image URL (optional)" style="width: 100%; margin-bottom: 5px;">
+                                    <input type="url" name="demoUrl" placeholder="Demo URL (optional)" style="width: 100%; margin-bottom: 5px;">
+                                    <button type="submit" class="btn" style="width: 100%;">Add to Showcase</button>
+                                </form>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <p>No completed projects yet.</p>
+                <% } %>
+            </section>
+    </main>
+    <script src="/js/heatmap.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Patchwork Admin</h1>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">User Dashboard</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>System Overview</h2>
+        
+        <section>
+            <h3>Project Matching</h3>
+            <div class="template-grid">
+                <% templates.forEach(template => { %>
+                    <div class="card">
+                        <h4><%= template.title %></h4>
+                        <p>Users waiting: <strong><%= waitingCounts[template._id.toString()] || 0 %></strong></p>
+                        <form action="/admin/match/<%= template._id %>" method="POST">
+                            <button type="submit" <%= (waitingCounts[template._id.toString()] || 0) < 2 ? 'disabled' : '' %>>
+                                Run Matchmaker
+                            </button>
+                        </form>
+                    </div>
+                <% }) %>
+            </div>
+        </section>
+
+        <section>
+            <h3>User Directory</h3>
+            <table border="1" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Credits</th>
+                        <th>Status</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(user => { %>
+                        <tr>
+                            <td><%= user.username %></td>
+                            <td><%= user.timeCredits %></td>
+                            <td>
+                                <% if (user.activeProject) { %>
+                                    In Project
+                                <% } else if (user.selectedTemplate) { %>
+                                    Waiting for <%= user.selectedTemplate.title %>
+                                <% } else { %>
+                                    Idle
+                                <% } %>
+                            </td>
+                            <td><%= user.role %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

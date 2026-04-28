@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Patchwork</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/users/profile">Profile</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>My Skills</h2>
+        <form action="/users/profile/skills" method="POST">
+            <section>
+                <h3>I can teach:</h3>
+                <div class="skill-list">
+                    <% allSkills.forEach(skill => { %>
+                        <label>
+                            <input type="checkbox" name="teachIds" value="<%= skill._id %>" 
+                            <%= user.skillsToTeach.some(s => s._id.equals(skill._id)) ? 'checked' : '' %>>
+                            <%= skill.name %>
+                        </label><br>
+                    <% }) %>
+                </div>
+            </section>
+            
+            <section>
+                <h3>I want to learn:</h3>
+                <div class="skill-list">
+                    <% allSkills.forEach(skill => { %>
+                        <label>
+                            <input type="checkbox" name="learnIds" value="<%= skill._id %>"
+                            <%= user.skillsToLearn.some(s => s._id.equals(skill._id)) ? 'checked' : '' %>>
+                            <%= skill.name %>
+                        </label><br>
+                    <% }) %>
+                </div>
+            </section>
+            <br>
+            <button type="submit">Update Skills</button>
+        </form>
+    </main>
+</body>
+</html>

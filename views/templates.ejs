@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Patchwork</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Available Project Templates</h2>
+        <div class="template-grid">
+            <% if (templates.length === 0) { %>
+                <p>No templates available. (Admins can add them via the seed script).</p>
+            <% } %>
+            <% templates.forEach(template => { %>
+                <div class="card">
+                    <h3><%= template.title %></h3>
+                    <p><%= template.description %></p>
+                    <p><strong>Skills:</strong> <%= template.requiredSkills.map(s => s.name).join(', ') %></p>
+                    <form action="/projects/create" method="POST">
+                        <input type="hidden" name="templateId" value="<%= template._id %>">
+                        <button type="submit">Start Project</button>
+                    </form>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Patchwork</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <% if (currentUser) { %>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/auth/logout">Logout</a></li>
+                <% } else { %>
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register">Register</a></li>
+                <% } %>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Welcome to Patchwork</h2>
+        <p>A skill-sharing network for project-based learning.</p>
+    </main>
+    <footer>
+        <p>&copy; 2026 Patchwork Project</p>
+    </footer>
+</body>
+</html>

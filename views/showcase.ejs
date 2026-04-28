@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Patchwork Showcase</h1>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/showcase">Gallery</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Community Projects</h2>
+        <div class="template-grid">
+            <% items.forEach(item => { %>
+                <div class="card">
+                    <% if (item.imageUrl) { %>
+                        <img src="<%= item.imageUrl %>" alt="Project image" style="width: 100%; border-radius: 4px;">
+                    <% } %>
+                    <h3><%= item.title %></h3>
+                    <p><%= item.description %></p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>Votes: <strong><%= item.votes %></strong></span>
+                        <form action="/showcase/<%= item._id %>/vote" method="POST">
+                            <button type="submit" class="btn">Vote</button>
+                        </form>
+                    </div>
+                    <% if (item.demoUrl) { %>
+                        <a href="<%= item.demoUrl %>" target="_blank">Live Demo</a>
+                    <% } %>
+                </div>
+            <% }) %>
+        </div>
+    </main>
+</body>
+</html>
