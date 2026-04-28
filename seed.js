@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Skill = require('./models/Skill');
 const ProjectTemplate = require('./models/ProjectTemplate');
+const User = require('./models/User');
 const config = require('./config.json');
 
 const skills = [
@@ -42,20 +43,27 @@ mongoose.connect(config.mongoURI)
   .then(async () => {
     console.log('Seeding database...');
     
-    // Clear existing
     await Skill.deleteMany({});
     await ProjectTemplate.deleteMany({});
+    await User.deleteMany({});
 
-    // Add Skills
     const createdSkills = await Skill.insertMany(skills);
     console.log(`${createdSkills.length} skills added.`);
 
-    // Add Templates (assign to a dummy admin if needed, or just skip createdBy for now)
-    // For this prototype, we'll just skip the strict ref check or add a placeholder
+    const admin = new User({
+        username: 'admin',
+        email: 'admin@patchwork.com',
+        password: 'adminpassword',
+        role: 'admin',
+        timeCredits: 100
+    });
+    await admin.save();
+    console.log('Admin user created (admin/adminpassword)');
+
     const templateData = templates.map(t => ({
         ...t,
         requiredSkills: [createdSkills[0]._id, createdSkills[1]._id],
-        createdBy: new mongoose.Types.ObjectId() // Placeholder
+        createdBy: admin._id
     }));
     await ProjectTemplate.insertMany(templateData);
     console.log(`${templateData.length} templates added.`);
