@@ -84,6 +84,10 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => res.redirect('/auth/login'));
 app.get('/register', (req, res) => res.redirect('/auth/register'));
 
+// Error handling middleware
+const errorHandler = require('./middleware/errorHandler');
+app.use(errorHandler);
+
 // Start server
 const PORT = process.env.PORT || config.port;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

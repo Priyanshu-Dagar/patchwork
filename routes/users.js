@@ -15,8 +15,10 @@ router.get('/profile', requireLogin, async (req, res) => {
   }
 });
 
+const { validateSkillConflict } = require('../middleware/validation');
+
 // Update Skills
-router.post('/profile/skills', requireLogin, async (req, res) => {
+router.post('/profile/skills', requireLogin, validateSkillConflict, async (req, res) => {
   const { teachIds, learnIds } = req.body;
   try {
     // Basic conflict check
